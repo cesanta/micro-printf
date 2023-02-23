@@ -1,7 +1,7 @@
 # Tiny extendable printf for microcontrollers
 
 [![License: AGPL/Commercial](https://img.shields.io/badge/License-AGPL%20or%20Commercial-green.svg)](https://opensource.org/licenses/agpl-3.0.php)
-[![Build+Test Status](https://github.com/cesanta/micro-printf/workflows/build/badge.svg)](https://github.com/cesanta/micro-printf/actions)
+[![Build Status](https://github.com/cesanta/micro-printf/workflows/build/badge.svg)](https://github.com/cesanta/micro-printf/actions)
 [![Code Coverage](https://codecov.io/gh/cesanta/micro-printf/branch/master/graph/badge.svg)](https://codecov.io/gh/cesanta/micro-printf)
 
 This is a minimal `*printf()` implementation optimised for embedded systems,
