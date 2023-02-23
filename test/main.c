@@ -6,6 +6,7 @@
 #include <math.h>    // NAN
 #include <stdint.h>  // int64_t, etc
 #include <stdio.h>   // printf/snprintf etc
+#include <string.h>  // strcmp
 
 #include "micro_printf.h"
 

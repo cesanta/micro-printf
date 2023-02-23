@@ -1,21 +1,38 @@
-PROG ?= unit_test                   # Program we are building
-DELETE = rm -rf                     # Command to remove files
-OUT ?= -o $(PROG)                   # Compiler argument for output file
+PROG ?= unit_test
+CFLAGS = -W -Wall -Wextra -I.. -Werror -Wno-deprecated -Wundef -Wshadow -Wdouble-promotion -Wconversion
+CWD ?= $(realpath $(CURDIR))
+ROOT ?= $(realpath $(CURDIR)/..)
+DOCKER = docker run --platform linux/amd64 $(ENV) --rm -e WINEDEBUG=-all -v $(ROOT):$(ROOT) -w $(CWD)
 SOURCES = main.c ../micro_printf.c  # Source code files
-CFLAGS = -W -Wall -Wextra -g -I..   # Build options
 
-ifeq ($(OS),Windows_NT)   # Windows settings. Assume MinGW compiler. To use VC: make CC=cl CFLAGS=/MD OUT=/Feprog.exe
-  PROG ?= unit_test.exe         # Use .exe suffix for the binary
-  CC = gcc                      # Use MinGW gcc compiler
-  DELETE = cmd /C del /Q /F /S  # Command prompt command to delete files
-  OUT ?= -o $(PROG)             # Build output
+ifeq "$(findstring ++,$(CC))" ""
+  CFLAGS += -Wmissing-prototypes -Wstrict-prototypes
+else
+  CFLAGS += -Wno-deprecated
 endif
 
-run: $(PROG)              # Default target. Build and run program
+run: $(PROG)
 	$(RUN) ./$(PROG) $(ARGS)
 
-$(PROG): $(SOURCES)       # Build program from sources
-	$(CC) $(SOURCES) $(CFLAGS) $(CFLAGS_EXTRA) $(OUT)
+$(PROG): $(SOURCES)
+	$(CC) $(SOURCES) $(CFLAGS) $(CFLAGS_EXTRA) -o $@
+
+vc22:
+	$(DOCKER) mdashnet/vc22 wine64 cl /nologo /W3 /O2 /MD /I.. $(SOURCES) /Fe$@.exe
+	$(DOCKER) mdashnet/vc22 wine64 $@.exe
+
+vc98:
+	$(DOCKER) mdashnet/vc98 wine cl /nologo /W3 /O2 /MD /I.. $(SOURCES) /Fe$@.exe
+	$(DOCKER) mdashnet/vc98 wine $@.exe
+
+arduino:
+	curl -s http://downloads.arduino.cc/arduino-1.8.13-linux64.tar.xz -o /tmp/a.tgz
+	tar -xf /tmp/a.tgz
+	mv arduino-* $@
+
+uno: arduino
+	rm -rf tmp; mkdir tmp; cp main.ino tmp/tmp.ino; cp ../*.[ch] tmp/
+	$(DOCKER) mdashnet/cc2 ./arduino/arduino --verify --board arduino:avr:nano tmp/tmp.ino
 
 define build
   @arm-none-eabi-gcc footprint.c ../micro_printf.c -o $1.elf -ffunction-sections -fdata-sections -I.. $2 $3 -mthumb -e main -nostartfiles -nostdlib --specs nano.specs -lc -lgcc -Wl,--gc-sections -Wl,-Map=$1.map
@@ -35,6 +52,5 @@ footprint:
 	$(call build,m0_std_nofloat,$(M0),-DSTD)
 	$(call build,m0_std,$(M0),-DSTD -u _printf_float)
 
-clean:                    # Cleanup. Delete built program and all build artifacts
-	$(DELETE) $(PROG) *.o *.obj *.exe *.dSYM *.elf *.bin *.map
-
+clean:
+	rm -rf $(PROG) tmp *.o *.obj *.exe *.dSYM *.elf *.bin *.map

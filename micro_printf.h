@@ -21,6 +21,10 @@
 #include <stdarg.h>
 #include <stddef.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 // Low level basic functions
 size_t m_vxprintf(void (*)(char, void *), void *, const char *fmt, va_list *);
 size_t m_xprintf(void (*)(char, void *), void *, const char *fmt, ...);
@@ -36,3 +40,7 @@ size_t m_fmt_mac(void (*out)(char, void *), void *arg, va_list *ap);
 size_t m_fmt_b64(void (*out)(char, void *), void *arg, va_list *ap);
 size_t m_fmt_esc(void (*out)(char, void *), void *arg, va_list *ap);
 size_t m_fmt_quo(void (*out)(char, void *), void *arg, va_list *ap);
+
+#ifdef __cplusplus
+}
+#endif
