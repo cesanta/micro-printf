@@ -1,6 +1,6 @@
 # Tiny extendable printf for microcontrollers
 
-[![License: AGPLv3/Commercial](https://img.shields.io/badge/License-AGPL_v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
+[![License: AGPLv3/Commercial](https://img.shields.io/badge/License-AGPLv3%20or%20Commercial-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
 [![Build Status](https://github.com/cesanta/micro-printf/workflows/build/badge.svg)](https://github.com/cesanta/micro-printf/actions)
 [![Code Coverage](https://codecov.io/gh/cesanta/micro-printf/branch/master/graph/badge.svg)](https://codecov.io/gh/cesanta/micro-printf)
 
@@ -26,7 +26,7 @@ print IP addresses, JSON-escaped strings, base64 data, etc.
 char buf[100];
 m_snprintf(buf, sizeof(buf), "Hello, %s! Float value: %g", "world", 1.234);
 m_snprintf(buf, sizeof(buf), "Substring: %.*s", 3, "foobar");
-m_snprintf(buf, sizeof(buf), "Length, padding: %02x", 123);
+m_snprintf(buf, sizeof(buf), "Length, padding: %#02x", 123);
 m_snprintf(buf, sizeof(buf), "Alignment: %-15s", "hi");
 
 // Print to the UART
