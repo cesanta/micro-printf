@@ -1,5 +1,5 @@
 PROG ?= unit_test
-CFLAGS = -W -Wall -Wextra -I.. -Werror -Wno-deprecated -Wundef -Wshadow -Wdouble-promotion -Wconversion
+CFLAGS = -O2 -I.. -coverage -W -Wall -Wextra -Werror -Wno-deprecated -Wundef -Wshadow -Wdouble-promotion -Wconversion
 CWD ?= $(realpath $(CURDIR))
 ROOT ?= $(realpath $(CURDIR)/..)
 DOCKER = docker run --platform linux/amd64 $(ENV) --rm -e WINEDEBUG=-all -v $(ROOT):$(ROOT) -w $(CWD)
@@ -34,6 +34,13 @@ uno: arduino
 	rm -rf tmp; mkdir tmp; cp main.ino tmp/tmp.ino; cp ../*.[ch] tmp/
 	$(DOCKER) mdashnet/cc2 ./arduino/arduino --verify --board arduino:avr:nano tmp/tmp.ino
 
+coverage: run
+	gcov -l -n *.gcno | sed '/^$$/d' | sed 'N;s/\n/ /'
+	@gcov *.gcno >/dev/null
+
+upload-coverage: coverage
+	curl -s https://codecov.io/bash | /bin/bash
+
 define build
   @arm-none-eabi-gcc footprint.c ../micro_printf.c -o $1.elf -ffunction-sections -fdata-sections -I.. $2 $3 -mthumb -e main -nostartfiles -nostdlib --specs nano.specs -lc -lgcc -Wl,--gc-sections -Wl,-Map=$1.map
   @arm-none-eabi-objcopy -O binary $1.elf $1.bin
@@ -53,4 +60,4 @@ footprint:
 	$(call build,m0_std,$(M0),-DSTD -u _printf_float)
 
 clean:
-	rm -rf $(PROG) tmp *.o *.obj *.exe *.dSYM *.elf *.bin *.map
+	rm -rf $(PROG) tmp *.o *.obj *.exe *.dSYM *.elf *.bin *.map *.gcno *.gcda *.gcov
