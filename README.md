@@ -26,7 +26,7 @@ print IP addresses, JSON-escaped strings, base64 data, etc.
 char buf[100];
 m_snprintf(buf, sizeof(buf), "Hello, %s! Float value: %g", "world", 1.234);
 m_snprintf(buf, sizeof(buf), "Substring: %.*s", 3, "foobar");
-m_snprintf(buf, sizeof(buf), "Length, padding: %#02x", 123);
+m_snprintf(buf, sizeof(buf), "Length, padding: %02x", 123);
 m_snprintf(buf, sizeof(buf), "Alignment: %-15s", "hi");
 
 // Print to the UART
