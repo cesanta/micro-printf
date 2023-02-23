@@ -16,8 +16,7 @@ print IP addresses, JSON-escaped strings, base64 data, etc.
 - Works with any compiler, starting from MSVC 98 to modern Clang
 - Tiny size: see Footprint section below
 - Supports all major format specifiers:
-- Supports a non-standard `%M` specifier which allows for custom formats -
-  like printing your own structures as JSON strings
+- Supports a non-standard `%M` specifier which allows for custom formats
 - Extensively tested
 
 ## Usage example
@@ -64,7 +63,7 @@ Print formatted string using output function `fn()`. Parameters:
 
 Return value: Number of bytes printed
 
-### m\_snprintf(), mg\_vsnprintf()
+### m\_snprintf(), m\_vsnprintf()
 ```c
 size_t m_vsnprintf(char *buf, size_t len, const char *fmt, va_list *ap);
 size_t m_snprintf(char *buf, size_t len, const char *fmt, ...);

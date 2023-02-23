@@ -5,10 +5,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
-    - run: make -C test clean run upload_coverage CC=gcc
+    - run: make -C test clean run CC=gcc
     - run: make -C test clean run CC=clang
     - run: make -C test clean run CC=g++
     - run: make -C test clean run CC=clang++
+    - run: make -C test clean upload-coverage
   MacOS:
     runs-on: macos-latest
     steps:
