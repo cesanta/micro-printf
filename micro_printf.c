@@ -16,7 +16,18 @@
 //
 // SPDX-License-Identifier: AGPL-3.0 or commercial
 
+#if defined(_MSC_VER) && _MSC_VER < 1700
+typedef __int64 int64_t;
+typedef unsigned __int64 uint64_t;
+typedef unsigned char uint8_t;
+typedef char int8_t;
+typedef unsigned short uint16_t;
+typedef short int16_t;
+typedef unsigned int uint32_t;
+typedef int int32_t;
+#else
 #include <stdint.h>
+#endif
 
 #include "micro_printf.h"
 
@@ -286,7 +297,7 @@ size_t m_vxprintf(void (*out)(char, void *), void *param, const char *fmt,
 #if !defined(NOFLOAT)
           || c == 'g' || c == 'f'
 #endif
-          ) {
+      ) {
         int s = (c == 'd'), h = (c == 'x' || c == 'X' || c == 'p');
         char tmp[40];
         size_t xl = x ? 2 : 0;
@@ -295,9 +306,9 @@ size_t m_vxprintf(void (*out)(char, void *), void *param, const char *fmt,
           double v = va_arg(*ap, double);
           if (pr == ~0U) pr = 6;
           k = m_dtoa(tmp, sizeof(tmp), v, (int) pr);
-        } else 
+        } else
 #endif
-          if (is_long == 2) {
+            if (is_long == 2) {
           int64_t v = va_arg(*ap, int64_t);
           k = m_lld(tmp, v, s, h);
         } else if (is_long == 1) {
