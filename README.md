@@ -12,14 +12,13 @@ print IP addresses, JSON-escaped strings, base64 data, etc.
 
 ## Features
 
-- Works with any compiler, starting from MSVC 98 to modern Clang
 - Source code is both ISO C and ISO C++ compliant
 - Tiny size: see the [Footprint](#footprint) section below for exact numbers
 - Supports all major format specifiers, width, precition and alignment
 - Supports floating point `%f` and `%g` specifiers by default
 - Supports a non-standard `%M` specifier which allows for custom formats
 - Can print to anything: to a memory buffer, file, socket, UART, etc
-- Extensively [tested](https://github.com/cesanta/micro-printf/actions) using VC98, VC22, ARM GCC, Avr GCC, x86 GCC, Clang
+- Extensively [tested](https://github.com/cesanta/micro-printf/actions) using VC98, VC22, ARM GCC, AVR GCC, x86 GCC, Clang
 
 ## Usage example
 
