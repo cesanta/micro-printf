@@ -24,6 +24,18 @@ typedef int int32_t;
 
 #include "micro_printf.h"
 
+static int sf(const char *expected, const char *fmt, ...) {
+  char buf[100];
+  va_list ap;
+  int result;
+  va_start(ap, fmt);
+  m_vsnprintf(buf, sizeof(buf), fmt, &ap);
+  va_end(ap);
+  result = strcmp(expected, buf) == 0;
+  if (!result) printf("[%s] != [%s]\n", expected, buf);
+  return result;
+}
+
 // This function compares micro_printf() with the libc's printf()
 static int sn(const char *fmt, ...) {
   char buf[100], tmp[1] = {0}, buf2[sizeof(buf)];
@@ -90,6 +102,8 @@ static void test_std(void) {
   assert(sn("%s ", "a"));
   assert(sn("%s %s", "a", "b"));
   assert(sn("%2s %s", "a", "b"));
+  
+  assert(sf("foo %v", "foo %v", 123)); // Uknown specifier left intact
 }
 
 static void test_float(void) {
@@ -150,18 +164,6 @@ static void test_float(void) {
   TEST_FLOAT("%g", HUGE_VAL, "inf");
   TEST_FLOAT("%g", -HUGE_VAL, "-inf");
 #endif
-}
-
-static int sf(const char *expected, const char *fmt, ...) {
-  char buf[100];
-  va_list ap;
-  int result;
-  va_start(ap, fmt);
-  m_vsnprintf(buf, sizeof(buf), fmt, &ap);
-  va_end(ap);
-  result = strcmp(expected, buf) == 0;
-  if (!result) printf("[%s] != [%s]\n", expected, buf);
-  return result;
 }
 
 static void test_m(void) {
