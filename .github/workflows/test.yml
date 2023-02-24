@@ -1,5 +1,7 @@
 name: test
-on: [push]
+on:
+  push:
+    paths: ["**Makefile", "**.c", "**.h", "**.ino"]
 jobs:
   Linux:
     runs-on: ubuntu-latest

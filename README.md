@@ -14,7 +14,7 @@ print IP addresses, JSON-escaped strings, base64 data, etc.
 
 - Source code is both ISO C and ISO C++ compliant
 - Works with any compiler, starting from MSVC 98 to modern Clang
-- Tiny size: see Footprint section below
+- Tiny size: see the [Footprint](#footprint) section below
 - Supports all major format specifiers:
 - Supports a non-standard `%M` specifier which allows for custom formats
 - Can print to anything: to a memory buffer, file, socket, UART, etc
