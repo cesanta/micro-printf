@@ -74,10 +74,8 @@ size_t m_snprintf(char *buf, size_t len, const char *fmt, ...);
 ```
 
 Print formatted string into a fixed-size buffer. These functions use the
-`m_*xprintf()` and an output function that prints to a fixed-size buffer.
-You can see an exact implementation at
-https://github.com/cesanta/micro-printf/blob/b9ff53f434375486a60dec53b3090d180a73f6e9/micro_printf.c#L37-L53
-
+`m_*xprintf()` and an [output function that prints to a fixed-size
+buffer](https://github.com/cesanta/micro-printf/blob/b9ff53f434375486a60dec53b3090d180a73f6e9/micro_printf.c#L37-L53).
 Parameters:
 - `buf` - a buffer to print to. Can be NULL, in this case `len` must be 0
 - `len` - a size of the `buf`
