@@ -42,16 +42,16 @@ m_xprintf(out, USART3, "Hello, %s!\n", "world");
 
 ### m\_xprintf(), m\_vxprintf()
 ```c
-size_t m_vxprintf(void (*fn)(char, void *), void *p, const char *fmt, va_list *);
-size_t m_xprintf(void (*fn)(char, void *), void *p, const char *fmt, ...);
+size_t m_vxprintf(void (*out)(char, void *), void *arg, const char *fmt, va_list *);
+size_t m_xprintf(void (*out)(char, void *), void *arg, const char *fmt, ...);
 ```
 
 Print formatted string using an output function `fn()`. The output function
 outputs a single byte: `void fn(char ch, void *param) { ... }`. By using
 different output functions, it is possible to print data to anywhere.
 Parameters:
-- `fn` - an output function
-- `p` - an arbitrary parameter to the `fn()` output function
+- `out` - an output function
+- `arg` - an parameter for the `out()` output function
 - `fmt` - printf-like format string which supports the following specifiers:
   - `%hhd`, `%hd`, `%d`, `%ld`, `%lld` - for `char`, `short`, `int`, `long`, `int64_t`
   - `%hhu`, `%hu`, `%u`, `%lu`, `%llu` - same but for unsigned variants
@@ -66,6 +66,27 @@ Parameters:
   - `%.*` - optional precision modifier specified as `int` argument
 
 Return value: Number of bytes printed
+
+The `%M` specifier expects a cusom format function that can grab any number of
+positional arguments. That format function should return the number of bytes
+it has printed. Here its signature:
+
+```c
+size_t (*ff)(void (*out)(char, void *), void *arg, va_list *ap);
+```
+Parameters:
+- `out` - an output function
+- `arg` - an parameter for the `out()` output function
+- `ap` - a pointer for fetching positional arguments
+
+Micro Printf ships with several pre-defined format functions described below.
+For example, a `m_fmt_b64()` format function grabs two positional arguments:
+`int` and `void *`, and base64-encodes that memory location:
+
+```c
+char buf[100];                                           // Base64-encode "abc"
+m_snprintf(buf, sizeof(buf), "%M", m_fmt_b64, 3, "abc"); // buf contains: YWJj
+```
 
 ### m\_snprintf(), m\_vsnprintf()
 ```c
