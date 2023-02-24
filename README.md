@@ -95,11 +95,11 @@ size_t m_fmt_quo(void (*out)(char, void *), void *arg, va_list *ap);
 ```
 
 Pre-defined helper functions for `%M` specifier:
-- `m_fmt_ip4` - prints IPv4 address, expects a pointer to 4-byte IPv4 address
-- `m_fmt_ip6` - prints IPv6 address, expects a pointer to 16-byte IPv6 address
-- `m_fmt_mac` - prints MAC address, expects a pointer to 6-byte MAC address
-- `m_fmt_b64` - prints base64 encoded data, expects `int`, `void *`
-- `m_fmt_esc` - prints a string escaping `\n`, `\t`, `\r`, `"`; espects `char *`
+- `m_fmt_ip4` - print IPv4 address. Expect a pointer to 4-byte IPv4 address
+- `m_fmt_ip6` - print IPv6 address. Expect a pointer to 16-byte IPv6 address
+- `m_fmt_mac` - print MAC address. Expect a pointer to 6-byte MAC address
+- `m_fmt_b64` - print base64 encoded data. Expect `int`, `void *`
+- `m_fmt_esc` - print a string, escaping `\n`, `\t`, `\r`, `"`. Espects `char *`
 - `m_fmt_quo` - double-quote the result of the following %M function
 
 Examples:
@@ -120,8 +120,8 @@ m_snprintf(buf, sizeof(buf), "%M", m_fmt_esc, str);     // a\n\"
 const char *data = "xyz";                               // Print base64 data:
 m_snprintf(buf, sizeof(buf), "%M", m_fmt_b64, 3, data); // eHl6
 
-// Double quote the result of the %M formatter, result: "127.0.0.1"
-m_snprintf(buf, sizeof(buf), "%M", m_fmt_quo, m_fmt_ip4, &ip4);
+// Double quote the result of the next %M formatter
+m_snprintf(buf, sizeof(buf), "%M", m_fmt_quo, m_fmt_ip4, &ip4);  // "127.0.0.1"
 ```
 
 ### Custom `%M` format functions
