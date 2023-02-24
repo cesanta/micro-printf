@@ -31,3 +31,9 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - run: make -C test uno
+  Arm:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - run: sudo apt -y update; sudo apt -y install gcc-arm-none-eabi
+    - run: make -C test arm

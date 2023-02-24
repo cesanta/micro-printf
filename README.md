@@ -164,11 +164,12 @@ free(buf);
 
 ## Footprint
 
-The following table contains footprint measurements for the ARM Cortex-M0
-and ARM Cortex-M7 builds of `m_snprintf()` compared to the standard
-`snprintf()`. The compilation is done with `-Os` flag using ARM GCC 10.3.1.
-The source code is at `test/footprint.c`, and the corresponding Makefile
-snippet is at `test/Makefile`.
+The following table contains footprint measurements for the ARM Cortex-M0 and
+ARM Cortex-M7 builds of `m_snprintf()` compared to the standard `snprintf()`.
+The compilation is done with `-Os` flag using ARM GCC 10.3.1.  See
+[test/footprint.c](test/footprint.c) and the corresponding
+[Makefile snippet](https://github.com/cesanta/micro-printf/blob/690ea5b3e049f229967bdddea239542b36b246b4/test/Makefile#L44-L60)
+used for measurements.
 
 |                            | Cortex-M0 | Cortex-M7 |
 | -------------------------- | --------- | --------- |

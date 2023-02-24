@@ -25,6 +25,9 @@ vc98:
 	$(DOCKER) mdashnet/vc98 wine cl /nologo /W3 /O2 /MD /I.. $(SOURCES) /Fe$@.exe
 	$(DOCKER) mdashnet/vc98 wine $@.exe
 
+arm:
+	arm-none-eabi-gcc $(SOURCES) syscalls.c -I.. -W -Wall -Wextra -Os -mcpu=cortex-m0 -mfloat-abi=soft -nostdlib -lc -lgcc -e main
+
 arduino:
 	curl -s http://downloads.arduino.cc/arduino-1.8.13-linux64.tar.xz -o /tmp/a.tgz
 	tar -xf /tmp/a.tgz
@@ -42,7 +45,7 @@ upload-coverage: coverage
 	curl -s https://codecov.io/bash | /bin/bash
 
 define build
-  @arm-none-eabi-gcc footprint.c ../micro_printf.c -o $1.elf -ffunction-sections -fdata-sections -I.. $2 $3 -mthumb -e main -nostartfiles -nostdlib --specs nano.specs -lc -lgcc -Wl,--gc-sections -Wl,-Map=$1.map
+  @arm-none-eabi-gcc footprint.c syscalls.c ../micro_printf.c -o $1.elf -ffunction-sections -fdata-sections -I.. $2 $3 -mthumb -e main -nostartfiles -nostdlib --specs nano.specs -lc -lgcc -Wl,--gc-sections -Wl,-Map=$1.map
   @arm-none-eabi-objcopy -O binary $1.elf $1.bin
   @ls -l $1.bin
 endef
